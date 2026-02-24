@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | Speech Emotion Recognition</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="auth">
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="brand">
+        <span class="badge">🎧</span>
+        Speech Emotion Recognition
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      <nav class="nav-links" id="navLinks">
+        <a class="nav-link" href="login.html">Login</a>
+        <a class="nav-link" href="register.html">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="auth-wrap">
+    <main class="card auth-card">
+      <h1 style="margin-bottom: 6px;">Create account</h1>
+      <p class="help">Register to save your prediction history securely.</p>
+
+      <div class="spacer"></div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Create a strong password" autocomplete="new-password" />
+      </div>
+
+      <button class="btn btn-primary" id="btnRegister" type="button">Create Account</button>
+
+      <div class="spacer"></div>
+      <p class="help">Already have an account? <a href="login.html">Login</a></p>
+
+      <div class="spacer"></div>
+      <div id="msg" class="alert error" style="display:none;"></div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { redirectIfLoggedIn } from "./auth-guard.js";
+    import { register } from "./auth.js";
+
+    redirectIfLoggedIn();
+
+    // Nav toggle
+    const toggle = document.getElementById('navToggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('show'));
+
+    // Active link
+    document.querySelectorAll('.nav-link').forEach(a => {
+      if (a.getAttribute('href') === 'register.html') a.classList.add('active');
+    });
+
+    const msg = document.getElementById('msg');
+
+    document.getElementById("btnRegister").onclick = async () => {
+      msg.style.display = 'none';
+      msg.textContent = '';
+      try {
+        await register(
+          document.getElementById("email").value.trim(),
+          document.getElementById("password").value.trim()
+        );
+      } catch (e) {
+        msg.style.display = 'block';
+        msg.textContent = "❌ " + e.message;
+      }
+    };
+  </script>
+</body>
+</html>

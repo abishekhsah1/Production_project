@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home | Speech Emotion Recognition</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="brand">
+        <span class="badge">🎧</span>
+        Speech Emotion Recognition
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      <nav class="nav-links" id="navLinks">
+        <a class="nav-link" href="home.html">Home</a>
+        <a class="nav-link" href="prediction.html">Prediction</a>
+        <a class="nav-link" href="prediction_list.html">History</a>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="#" id="navLogout">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <span class="tag">Deep Learning + Audio</span>
+          <h1>Detect emotions from speech audio</h1>
+          <p class="sub">Upload a .wav (or audio file) and get an emotion prediction with confidence. Your prediction history is saved per account.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="prediction.html">Start Prediction</a>
+            <a class="btn btn-ghost" href="prediction_list.html">View History</a>
+          </div>
+        </div>
+        <div class="card" style="min-width:20px;">
+          <h2 style="margin-bottom:10px;">Quick Tips</h2>
+          <ul style="padding-left:18px; color: var(--muted);">
+            <li>Use clear speech audio for best results.</li>
+            <li>Prefer short clips (5-20 seconds).</li>
+            <li>History is private to your login.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="grid cols-3">
+        <div class="card">
+          <h2>🎙 Predict</h2>
+          <p class="help">Upload an audio file and get the detected emotion instantly.</p>
+          <div class="spacer"></div>
+          <a class="btn btn-primary" href="prediction.html">Go to Prediction</a>
+        </div>
+        <div class="card">
+          <h2>📄 History</h2>
+          <p class="help">See your past predictions (emotion, confidence, and file name).</p>
+          <div class="spacer"></div>
+          <a class="btn btn-primary" href="prediction_list.html">Open History</a>
+        </div>
+        <div class="card">
+          <h2>ℹ️ About</h2>
+          <p class="help">Project details, what the system does, and how to use it.</p>
+          <div class="spacer"></div>
+          <a class="btn btn-primary" href="about.html">Read About</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>© 2026 Speech Emotion Recognition</p>
+    </footer>
+  </main>
+
+  <script type="module">
+    import { requireAuth } from "./auth-guard.js";
+    import { logout } from "./auth.js";
+
+    requireAuth();
+
+    // Nav toggle
+    const toggle = document.getElementById('navToggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('show'));
+
+    // Logout
+    document.getElementById('navLogout').addEventListener('click', (e) => {
+      e.preventDefault();
+      logout();
+    });
+
+    // Active link highlight
+    const page = window.location.pathname.split('/').pop() || 'home.html';
+    document.querySelectorAll('.nav-link').forEach(a => {
+      if (a.getAttribute('href') === page) a.classList.add('active');
+    });
+  </script>
+</body>
+</html>
